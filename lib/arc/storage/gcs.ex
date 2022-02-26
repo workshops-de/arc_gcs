@@ -171,12 +171,12 @@ defmodule Arc.Storage.GCS do
   end
 
   defp endpoint do
-    if Application.fetch_env(:arc, :asset_host) != false || Application.fetch_env(:arc, :asset_host) != nil do
-      case Application.fetch_env(:arc, :asset_host) do
-        :error -> @endpoint
-        {:ok, {:system, env_var}} when is_binary(env_var) -> System.get_env(env_var)
-        {:ok, endpoint} -> endpoint
-      end
+    case Application.fetch_env(:arc, :asset_host) do
+      :error -> @endpoint
+      {:ok, false} -> @endpoint
+      {:ok, nil} -> @endpoint
+      {:ok, {:system, env_var}} when is_binary(env_var) -> System.get_env(env_var)
+      {:ok, endpoint} -> endpoint
     end
   end
 
